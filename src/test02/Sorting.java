@@ -52,15 +52,34 @@ public class Sorting {
 	}
 
 	void quickSort(int arr[], int left, int right) {
-		//배열을 반으로 나눠 정렬한다
+		// 배열을 반을 자르는게 아니라, pivot을 설정 하는 방법이 배열의 절반인겁니다.
+		// 배열을 자르는 기준은 이 index입니다. index가 결정되는 조건은 partition로직을 보세요
+		System.out.println("정렬 범위: left=" + left + " right=" + right);
+		System.out.print("정렬 전 값: ");
+		for (int j = left; j <= right ; j++) {
+			System.out.print(arr[j] + ",");
+		}
+		System.out.println("");
 		int index = partition(arr, left, right);
-		//index가 1보다 클 경우, 즉 왼쪽이 남아있을 경우 정렬해준다
+		
+		System.out.print("정렬 후 값: ");
+		for (int j = left; j <= right ; j++) {
+			System.out.print(arr[j] + ",");
+		}
+		System.out.println("");
+		System.out.println("자르기 기준: index=" + index + " Value=" + arr[index]);
+		System.out.println("자른 배열 퀵정렬 할 건지 여부: " + "L=" +(left < index - 1) + " R=" + (index < right));
+		System.out.println("");
+
+		// 왼쪽을 정렬 할건지 여부 확인 및 왼쪽 정렬
 		if (left < index - 1)
 			//재귀로 반복한다
 			quickSort(arr, left, index - 1);
-		//재귀에서 탈출한 뒤 right(index) == 1이 된다
+		// 오른쪽을 정렬할건지 여부 확인 및 오른쪽 정렬
 		if (index < right)
 			quickSort(arr, index, right);
+		
+		// 즉 왼쪽 오른쪽 둘다 정렬 안하는것이 재귀 탈출 조건
 	}
 
 }
