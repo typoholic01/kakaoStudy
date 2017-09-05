@@ -65,7 +65,7 @@ public class GetMap {
 			int i = xy.getX();
 			int j = xy.getY();
 
-			logger.info("now board[" + i + "][" + j + "] : " + board[i][j]);
+			logger.info("now board[{}][{}] : {}", i, j, board[i][j]);
 			//2X2를 이룰 경우 +1해서 새로운 보드에 저장한다
 			
 			//TODO i,j가 끝일 경우 스킵한다
