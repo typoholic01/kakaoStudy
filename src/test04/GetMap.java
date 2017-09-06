@@ -1,20 +1,17 @@
 package test04;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class GetMap {
-	Logger logger = LogManager.getLogger(mainC.class);
-	List<XY> xys = new ArrayList<XY>();
+	/*https://m.blog.naver.com/PostView.nhn?blogId=occidere&logNo=220800582008&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F
+*/	Logger logger = LogManager.getLogger(GetMap.class);
 	int result = 0;
 	/*
 	 * https://www.acmicpc.net/problem/1915
 	 * */
 	public GetMap() {
-		/**
+		/**	NOT CACHING
 		 * 1. 전체스캔
 		 * 2. 1만 남은 부분을 재귀 재스캔
 		 * 3. 0이 될때까지 반복
@@ -23,72 +20,42 @@ public class GetMap {
 		 * */
 	}
 	
-	
-	
-	public int recursion(int [][]board) {
-		logger.info("진입: recursion");
+	private int minVal(int a, int b, int c) {
+		logger.info("minVal 진입");
 		
-		if (!xys.isEmpty()) {
-			board = secondScan(board);
-			recursion(board);
-		} else {
-			result = result * result;
-		}
-		
-		return result;
+		a = a < b ? a : b;
+		return a < c ? a : c;		
 	}
 	
-	public void init(int [][]board) {
-		logger.info("진입: init");
-		//처음 x,y를 세팅한다
+	public int secondScan(int [][]board) {
+		logger.info("진입: secondScan");
+		logger.info("x 길이: {}",board[0].length - 1);
+		logger.info("y 길이: {}",board.length - 1);
+		
+		//init
+		int d = 0;
+		int result = 0;
+		//캐시 메모리
+		
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				XY xy = new XY();
+				logger.info("board[{}][{}]: {}",i,j,board[i][j]);
 				
-				xy.setX(i);
-				xy.setY(j);
-				
-				xys.add(xy);
+				if (board[i][j] == 1) {
+					d = 1;
+
+					//가로 세로 1번째 줄을 제외하고 합산한다
+					if (i > 0 && j > 0) {
+						d = minVal(board[i-1][j-1], board[i-1][j], board[i][j-1]) + 1;
+						logger.info("result: {}",result);	
+						logger.info("d: {}",d);
+					}
+				}
+				result = result > d ? result : d;
+				board[i][j] = d;
 			}
 		}
-	}
-	
-	private int[][] secondScan(int [][]board) {
-		logger.info("진입: secondScan");
-
-		int [][]neoBoard = new int[board.length][board[0].length];		//구성값을 바꾼 새로운 보드를 추가한다		
-		List<XY> xysAf = new ArrayList<>();								//xys값 구성을 바꿀 새 리스트를 준비한다
 		
-		for (XY xy : xys) {
-			XY temp = new XY();
-			
-			int i = xy.getX();
-			int j = xy.getY();
-
-			logger.info("now board[{}][{}] : {}", i, j, board[i][j]);
-			//2X2를 이룰 경우 +1해서 새로운 보드에 저장한다
-			
-			//TODO i,j가 끝일 경우 스킵한다
-			if (i != board.length -1 && j != board[0].length - 1 && board[i][j] != 0 && board[i+1][j] != 0 && board[i][j+1] != 0 && board[i+1][j+1] != 0) {
-				neoBoard[i][j] = board[i][j] + 1;
-				temp.setX(i);
-				temp.setY(j);
-				
-				logger.info("new XY: " + i + "," + j);
-				result = board[i][j] + 1;
-				xysAf.add(temp);
-			} else {
-				neoBoard[i][j] = 0;
-			}
-		}
-		//새로운 xys 구성으로 교체한다
-		xys.clear();
-		xys = xysAf;
-		
-		if (xys.isEmpty()) {
-			return board;
-		}
-		
-		return neoBoard;
+		return result * result;
 	}
 }
