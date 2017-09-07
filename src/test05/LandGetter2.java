@@ -35,14 +35,7 @@ public class LandGetter2 {
 	private int[] rank(int[][] land) {
 		int[] rank = new int[3];
 		/*
-		 * a,b c,d를 비교한다
-		 * a,c를 비교한다
-		 * b,d를 비교한다
-		 * a,c,b,d
 		 * 
-		 * 7 10 5 6
-		 * 
-		 *  
 		 * 
 		 * */
 	

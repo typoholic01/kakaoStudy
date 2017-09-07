@@ -21,7 +21,7 @@ v	result
 세 점이 [1, 1], [2, 2], [1, 2] 위치에 있을 때, [2, 1]에 점이 위치하면 직사각형이 됩니다.*/
 public class Rectangle {
 	
-	private void insertCoordinate(int[][] coordeinate) {
+	public int[] insertCoordinate(int[][] v) {
 		/**
 		 * 
 		 * a,b,c,d 좌표가 있다고 하면
@@ -34,10 +34,43 @@ public class Rectangle {
 		 * 3. 하나만 일치하는 좌표 2개의 나머지 좌표의 묶음이 result 좌표이다.
 		 * 
 		 * */
+		int x1,x2,x3;
+		int y1,y2,y3;
 		
+		x1 = v[0][0];
+		x2 = v[1][0];
+		x3 = v[2][0];
+		
+		y1 = v[0][1]; 
+		y2 = v[1][1]; 
+		y3 = v[2][1];
+
+		int []answer = {getX(x1, x2, x3),getY(y1, y2, y3) };
+		
+		return answer;
 
 	}
 	
+	private int getX(int x1, int x2, int x3) {
+		if (x1 == x2) {
+			return x3;
+		} else if (x1 == x3) {
+			return x2;
+		} else {
+			return x1;
+		}
+
+	}
 	
+	private int getY(int y1, int y2, int y3) {
+		if (y1 == y2) {
+			return y3;
+		} else if (y1 == y3) {
+			return y2;
+		} else {
+			return y1;
+		}
+
+	}
 
 }
