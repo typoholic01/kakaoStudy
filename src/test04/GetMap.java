@@ -1,11 +1,11 @@
 package test04;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GetMap {
 	/*https://m.blog.naver.com/PostView.nhn?blogId=occidere&logNo=220800582008&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F
-*/	Logger logger = LogManager.getLogger(GetMap.class);
+*/	Logger logger = LoggerFactory.getLogger(getClass());
 	int result = 0;
 	/*
 	 * https://www.acmicpc.net/problem/1915
@@ -22,6 +22,9 @@ public class GetMap {
 	
 	private int minVal(int a, int b, int c) {
 		logger.info("minVal 진입");
+		logger.info("a: {}",a);
+		logger.info("b: {}",b);
+		logger.info("c: {}",c);
 		
 		a = a < b ? a : b;
 		return a < c ? a : c;		
@@ -35,7 +38,6 @@ public class GetMap {
 		//init
 		int d = 0;
 		int result = 0;
-		//캐시 메모리
 		
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
@@ -53,6 +55,7 @@ public class GetMap {
 				}
 				result = result > d ? result : d;
 				board[i][j] = d;
+				d = 0;
 			}
 		}
 		
