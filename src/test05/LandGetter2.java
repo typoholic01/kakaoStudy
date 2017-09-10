@@ -1,6 +1,10 @@
 package test05;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class LandGetter2 {
+	private static final Logger logger = LoggerFactory.getLogger(LandGetter2.class);
 	/*
 	 * 문제 설명
 땅따먹기 게임을 하려고 합니다. 땅따먹기 게임의 땅(land)은 총 N행 4열로 이루어져 있고, 모든 칸에는 점수가 쓰여 있습니다. 
@@ -27,25 +31,8 @@ public class LandGetter2 {
 1. 최대값으로 내려와야 한다
 2. 같은 열은 밟을 수 없다
 	 * 
-	 * */
-	public LandGetter2() {
-		
-	}
-	
-	private int[] rank(int[][] land) {
-		int[] rank = new int[3];
-		/*
-		 * 
-		 * 
-		 * */
-	
-		
-		
-		return null;
-	}
-	
-	
-	private int getMax(int[][] land) {
+	 * */	
+	public int getMax(int[][] land) {
 		/*
 		 * 1. 첫번째 줄의 1,2,3,4위를 구한다
 		 * 2. 두번째 줄의 1,2,3,4위를 구한다
@@ -57,87 +44,66 @@ public class LandGetter2 {
 		 * 		3.2.2 둘 중 높은 쪽을 선택한다
 		 * 		3.2.3 2번으로 돌아가 루프한다
 		 * 
+		 * 1. 모든 줄의 index rank를 구한다
+		 * i-1랭크의 1위와 i랭크의 1위의 index를 비교한다
+		 * 불일치할 경우 다음줄, 일치할 경우 i-1랭크의 2위, i랭크의 1위, 혹은 i-1랭크의 1위, i랭크의 2위를 비교한다
+		 * 다음줄로 넘어간다
+		 * 
+		 * 3개 이상으로 줄이 겹칠 경우 소팅의 가짓수가 늘어난다
 		 * 
 		 * 
 		 * */
+		int [][]index = new int[land.length][land[0].length];		
+		int answer = 0;
+		int i = 0;
 		
-		
-        int answer = 0;
-        int j = 0;
-        int bfj = 0;
-        int first = 0;
-        int second = 0;
-        int third = 0;
-        int forth = 0;
-        int rowMax = 0;
-        int bfMax = 0;
-        
-        for (int i = 0; i < land.length; i++) {
-        	while (j < 4) {
-        		switch (j) {
-    			case 0:
-    				first = land[i][j];
-    				j++;
-    				break;
-    			case 1:
-    				second = land[i][j];
-    				rowMax = first > second ? first : second;
-
-    				j++;
-    				break;
-    			case 2:
-    				third = land[i][j];
-    				rowMax = rowMax > third ? rowMax : third;
-
-    				j++;
-    				break;
-    			case 3:
-    				forth = land[i][j];
-    				rowMax = rowMax > forth ? rowMax : forth;
-    				
-    				j++;
-    				break;
-    			default:
-    				break;
+		while (i < land.length) {
+			index[i] = writeRank(land[i]);
+        	
+        	int max;
+        	
+        	if (i < land.length - 1) {
+	        	int nowFirst = index[i][0];
+	        	int nowSecond = index[i][1];
+	        	int afterFirst = index[i+1][0];
+	        	int afterSecond = index[i+1][1];
+				
+				if (nowFirst != afterFirst) {
+					max = land[i][nowFirst];
+    			} else if (nowFirst + afterSecond > nowSecond + afterFirst) {
+    				max = land[i][nowFirst];
+    			} else {
+    				max = land[i][nowSecond];
     			}
+				i++;
+	        	answer += max;
+			} else {
+				
 			}
-        	j = 0;
+        	
+        	logger.info("{}번째 합산: {}",i,answer);
 		}
 
         return answer;
 
 	}
 	
-	private int getMax2(int[][] land) {		
-        int answer = 0;
-        int evenMax = 0;
-        int evenj = 0;
-        int oddMax = 0;
-        int oddj = 0;
-        
-        for (int i = 0; i < land.length; i++) {
-        	if (i % 2 == 0) {
-    			for (int j = 0; j < land[0].length; j++) {
-    				if (evenMax < land[i][j]) {
-    					evenMax = land[i][j];
-    					evenj = j;
-					}
-    				
-    				if (j == land[0].length - 1) {
-						if (evenj == oddj) {
-							
-						}
-    					evenj = 0;
-					}
-    			}
-    			answer += evenMax;
-			} else {
-    			for (int j = 0; j < land[0].length; j++) {				
-    				oddMax = oddMax > land[i][j] ? oddMax : land[i][j];
-    			}
-    			answer += oddMax;		
+	int[] writeRank(int []arr)
+	{
+	    int []rank = new int[arr.length];
+	    int []index = new int[arr.length];
+	    
+	    for (int i = 0; i < 4; i++) {
+	    	for (int j = i + 1; j < 4; j++) {
+				if (arr[i] > arr[j]) {
+					rank[j] += 1;
+				} else {
+					rank[i] += 1;
+				}
 			}
+	    	index[rank[i]] = i;
 		}
-        return answer;
+	    
+	    return index;
 	}
 }
