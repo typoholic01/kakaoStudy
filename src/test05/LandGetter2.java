@@ -51,6 +51,7 @@ public class LandGetter2 {
 		 * 
 		 * 3개 이상으로 줄이 겹칠 경우 소팅의 가짓수가 늘어난다
 		 * 
+		 * 일치할 경우 재귀로 넘기며 계산을 유예한 뒤 한번에 계산해야 한다
 		 * 
 		 * */
 		int [][]index = new int[land.length][land[0].length];		
@@ -70,11 +71,13 @@ public class LandGetter2 {
 				
 				if (nowFirst != afterFirst) {
 					max = land[i][nowFirst];
-    			} else if (nowFirst + afterSecond > nowSecond + afterFirst) {
-    				max = land[i][nowFirst];
     			} else {
-    				max = land[i][nowSecond];
-    			}
+    				if (nowFirst + afterSecond > nowSecond + afterFirst) {
+        				max = land[i][nowFirst];
+        			} else {
+        				max = land[i][nowSecond];
+        			}
+    			} 
 				i++;
 	        	answer += max;
 			} else {
@@ -85,6 +88,14 @@ public class LandGetter2 {
 		}
 
         return answer;
+
+	}
+	
+	private void notEqualCood(int [][]land, int [][]index) {
+		// TODO 일치하지 않을 경우 경로 탐색 알고리즘
+		/*
+		 * 
+		 * */
 
 	}
 	
